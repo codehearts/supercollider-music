@@ -1,7 +1,7 @@
 // 1m42s
 
-"~/Music/senpro/samples/samples.sc".standardizePath.loadPaths;
-"~/Music/senpro/methods/melody-playback.sc".standardizePath.loadPaths;
+"~/Music/supercollider-music//samples/samples.sc".standardizePath.loadPaths;
+//"~/Music/senpro/methods/melody-playback.sc".standardizePath.loadPaths;
 //"../samples/samples.sc".resolveRelative.loadPaths;
 //"../methods/melody-playback.sc".resolveRelative.loadPaths;
 
@@ -16,7 +16,7 @@ SynthDef(\domobass) { |out=0, sFreq=50, eFreq=150, atk=0.25, atkC= -2.5, dur=0.7
 		dust     = Dust.ar(XLine.kr(100, 1000, atk+dur), acmpEnv*0.15),
 		saw      = Saw.ar(freqEnv*XLine.kr(0.2, 0.5, halfTime), acmpEnv*0.5),
 		pan      = Pan2.ar(sine+saw+dust, FSinOsc.kr(0.5/(atk+dur+dec), panDir), 1);
-	
+
 	Out.ar(out, pan);
 }.send(s);
 
@@ -28,7 +28,7 @@ SynthDef(\beep) { |out=0, freq=440, atk=0.1, dec=0.15, amp=1, da=2|
 				),
 		sine = Saw.ar(fEnv, amp),
 		rvrb = FreeVerb.ar(sine, 0.5, 1, 0);
-	
+
 	Out.ar(out, rvrb);
 }.send(s);
 
@@ -62,7 +62,7 @@ SynthDef(\colorDeco) { |out=0, dur=2.5, fadeDur=1, pImp=5 da=2, amp=1, buf|
 		),
 		env = EnvGen.kr(Env([1, 1, 0], [dur, fadeDur]), 1, 1, doneAction: da),
 		pan = Pan2.ar(samp*env, FSinOsc.kr(pImp), amp);
-	
+
 	Out.ar(out, pan);
 }.send(s);
 
@@ -80,7 +80,7 @@ SynthDef(\hkBurst) { |out=0, dur=2.5, pb=4, rImp=50, fadeDur=1, pImp=5 da=2, amp
 		),
 		env = EnvGen.kr(Env([1, 1, 0], [dur, fadeDur]), 1, 1, doneAction: da),
 		pan = Pan2.ar(samp*env, FSinOsc.kr(pImp), amp);
-	
+
 	Out.ar(out, pan);
 }.send(s);
 

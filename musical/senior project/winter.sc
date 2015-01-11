@@ -1,6 +1,6 @@
 // 1m31s
 
-"~/Music/senpro/samples/samples.sc".standardizePath.loadPaths;
+"~/Music/supercollider-music//samples/samples.sc".standardizePath.loadPaths;
 //"../samples/samples.sc".resolveRelative.loadPaths;
 
 
@@ -19,7 +19,7 @@ SynthDef(\atmos) { |out=0, gate=1, fadeDur=2.5, totalDur=5, startDur=0.005, endD
 			-1 // grain envelope buffer
 		),
 		env = EnvGen.kr(Env.cutoff(fadeDur, 1), gate, doneAction: da) * samp;
-	
+
 	Out.ar(out, env);
 }.send(s);
 
@@ -35,7 +35,7 @@ SynthDef(\kring) { |out=0, dur=3, rate=1, pos=0, buf|
 			0, // panning
 			-1 // grain envelope buffer
 		);
-	
+
 	Out.ar(out, samp);
 }.send(s);
 
@@ -52,7 +52,7 @@ SynthDef(\babum) { |bus=0, imp=25, buf|
 			-1 // grain envelope buffer
 		),
 		pan = Pan2.ar(samp, FSinOsc.kr(2), 0.5);
-	
+
 	Out.ar(bus, pan);
 }.send(s);
 
@@ -69,7 +69,7 @@ SynthDef(\sled) { |out=0, dur=10, gate=1, fadeDur=2.5, da=2, buf|
 			-1 // grain envelope buffer
 		),
 		env = EnvGen.kr(Env.cutoff(fadeDur, 1), gate, doneAction: da) * samp;
-	
+
 	Out.ar(out, env);
 }.send(s);
 
@@ -87,7 +87,7 @@ SynthDef(\forest) { |bus=0, dense=150, vary=10, gate=1, amp=1, fadeDur=2.5, da=2
 			-1 // grain envelope buffer
 		),
 		env = EnvGen.kr(Env.cutoff(fadeDur, 1), gate, doneAction: da) * samp;
-	
+
 	Out.ar(bus, env*amp);
 }.send(s);
 
@@ -95,7 +95,7 @@ SynthDef(\forest) { |bus=0, dense=150, vary=10, gate=1, amp=1, fadeDur=2.5, da=2
 // Synthdefs
 SynthDef(\bass) { |out=0, freq=150, dur=1|
 	var inst = SinOsc.ar(XLine.kr(freq, 50, dur, doneAction: 2), 0, 1);
-	
+
 	Out.ar(out, inst);
 }.send(s);
 
@@ -111,7 +111,7 @@ SynthDef(\bell) { |out=0, freq=800, resFreq=2000, attack=0.005, decay=0.75, resD
 		base = SinOsc.ar(freq, pi, eAmp*0.25) + Saw.ar(freq/2, eAmp*0.005),
 		ring = Ringz.ar(base, resFreq, resDecay),
 		rvrb = FreeVerb.ar(ring, 0.3, 1, 1);
-	
+
 	Out.ar(out, rvrb);
 }.send(s);
 
@@ -232,7 +232,7 @@ bassR = Routine({
 	var bassDur = 0.25,
 		bassBus = Bus.control(s, 2),
 		bassSyn;
-	
+
 	loop({
 		4.do({
 			bassSyn = Synth.new(\bass, [\out, bassBus, \freq, 200, \dur, bassDur]);
@@ -242,7 +242,7 @@ bassR = Routine({
 				[\bus, bassBus, \dur, bassDur]
 			);
 			drumTempo.wait;
-			
+
 			bassSyn = Synth.new(\bass, [\out, bassBus, \freq, 200, \dur, bassDur]);
 			Synth.after(
 				bassSyn,
@@ -251,7 +251,7 @@ bassR = Routine({
 			);
 			drumTempo.wait;
 		});
-		
+
 		// Lower frequency
 		bassSyn = Synth.new(\bass, [\out, bassBus, \freq, 150, \dur, bassDur]);
 		Synth.after(
@@ -260,7 +260,7 @@ bassR = Routine({
 			[\bus, bassBus, \dur, bassDur]
 		);
 		drumTempo.wait;
-		
+
 		bassSyn = Synth.new(\bass, [\out, bassBus, \freq, 150, \dur, bassDur]);
 		Synth.after(
 			bassSyn,
@@ -280,16 +280,16 @@ snareR = Routine({
 			Synth(\snare, [\out, 1, \freq, 0500]);
 			drumTempo.wait;
 		});
-		
+
 		// Double snare
 		Synth(\snare, [\out, 0, \freq, 1050]);
 		Synth(\snare, [\out, 1, \freq, 0550]);
 		(drumTempo/4).wait;
-		
+
 		Synth(\snare, [\out, 0, \freq, 1000]);
 		Synth(\snare, [\out, 1, \freq, 0500]);
 		(drumTempo/4).wait;
-		
+
 		(drumTempo/2).wait;
 	});
 }).play;
@@ -300,7 +300,7 @@ babble = Routine({
 		babbleSyn = Synth(\babum, [\buf, jbuf, \imp, 10]);
 		"Julie?".postln;
 		4.wait;
-		
+
 		babbleSyn.free;
 		"...".postln;
 		1.wait;

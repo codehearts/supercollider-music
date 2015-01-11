@@ -1,6 +1,6 @@
 // 7 minutes 51 seconds
 
-"~/Music/SC/samples/samples.sc".standardizePath.loadPaths;
+"~/Music/supercollider-music/samples/samples.sc".standardizePath.loadPaths;
 //"../samples/samples.sc".resolveRelative.loadPaths;
 
 SynthDef(\brokenWub) { |out=0, freq=150, sustain=0.25, pan=0, amp=0.5|
