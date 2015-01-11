@@ -1,6 +1,6 @@
 // Mishmash of various instruments and textures from other files
 
-~kaliba = "samples/Kaliba.aiff".resolveRelative;
+~kaliba = "~/Music/supercollider-music/samples/Kaliba.aiff".standardizePath;
 "Audio samples loaded";
 
 // Kalimba Ringer

@@ -1,4 +1,4 @@
-"~/Music/SC/samples/samples.sc".standardizePath.loadPaths;
+"~/Music/supercollider-music/samples/samples.sc".standardizePath.loadPaths;
 
 SynthDef(\cutBuf) { |out=0, imp=2.5, sustain=4, amp=0.25, pb_rate=0.618, buf|
 	var samp = GrainBuf.ar(

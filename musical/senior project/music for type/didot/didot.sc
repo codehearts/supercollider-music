@@ -1,6 +1,6 @@
 // 7 minutes 51 seconds
 
-"~/Music/SC/samples/samples.sc".standardizePath.loadPaths;
+"~/Music/supercollider-music/samples/samples.sc".standardizePath.loadPaths;
 //"~/Music/SC/samples/samples.sc".resolveRelative.loadPaths;
 
 SynthDef(\brokenWub) { |out=0, freq=150, sustain=0.25, pan=0, amp=0.5|
@@ -8,7 +8,7 @@ SynthDef(\brokenWub) { |out=0, freq=150, sustain=0.25, pan=0, amp=0.5|
 		saw  = Saw.ar(100, aEnv),
 		sine = SinOsc.ar(freq, 0, saw),
 		pan2 = Pan2.ar(sine, pan);
-	
+
 	Out.ar(out, pan2);
 }.add;
 
@@ -17,7 +17,7 @@ SynthDef(\humm) { |out=0, freq=440, imp=0.5, sustain=1, fadeOut=1, amp=0.25|
 		inst = Pulse.ar(freq, 0.5, FSinOsc.kr(imp, 0, amp)) * sust,
 		rvrb = FreeVerb.ar(inst, 1, 1, 0.05),
 		pan2 = Pan2.ar(rvrb, FSinOsc.kr(imp*1.5));
-	
+
 	Out.ar(out, pan2);
 }.add;
 
@@ -28,7 +28,7 @@ SynthDef(\softTwinkle) { |out=0, sFreq=440, eFreq=660, steps=4, imp=0.5, sustain
 		inst = Pulse.ar(fStp, 0.5, FSinOsc.kr(imp, 0, amp)),
 		rvrb = FreeVerb.ar(inst, 1, 1, 0.05),
 		pan2 = Pan2.ar(rvrb, FSinOsc.kr(imp*1.5));
-	
+
 	Out.ar(out, pan2*sust);
 }.add;
 
@@ -40,7 +40,7 @@ SynthDef(\twinkle) { |out=0, sFreq=440, eFreq=660, steps=4, imp=2.5, stepDur=2, 
 		inst = Pulse.ar(fStp, 0.5, FSinOsc.kr(imp, 0, amp)*aStp),
 		rvrb = FreeVerb.ar(inst, 1, 1, 0.05),
 		pan2 = Pan2.ar(rvrb, FSinOsc.kr(imp*2));
-	
+
 	Out.ar(out, pan2*sust);
 }.add;
 
@@ -56,7 +56,7 @@ SynthDef(\lurker) { |out=0, minF=440, maxF=1000, dur=5, sustain=15, amp=1|
 		sine = SinOsc.ar(LFNoise0.kr(dur/2, minF, maxF), 0, Saw.kr(XLine.kr(25, 75, sustain))) * aEnv,
 		rvrb = FreeVerb.ar(sine, 1, 1, 1),
 		pan2 = Pan2.ar(rvrb, FSinOsc.kr(0.5/dur));
-	
+
 	Out.ar(out, pan2 * sust);
 }.add;
 
@@ -68,7 +68,7 @@ SynthDef(\distantMachine) { |out=0, fSaw=300, fSin=1000, imp=25, sustain=1, fade
 		sine = SinOsc.ar(fSin, 0, amp) * cut2,
 		pan2 = Pan2.ar(sine+saw*sust, 0),
 		rvrb = FreeVerb.ar(pan2, 1, 1, 0);
-	
+
 	Out.ar(out, rvrb);
 }.add;
 
@@ -77,7 +77,7 @@ SynthDef(\buzzDust) { |out=0, freq=200, imp=10, fadeIn=1, sustain=2, fadeOut=1, 
 		sqr  = Pulse.ar(freq, 0.5, Saw.kr(LFNoise0.kr(10, 10, 100))*amp),
 		cut  = TIRand.kr(0, 1, Impulse.kr(imp)),
 		pan2 = Pan2.ar(sqr, Stepper.kr(Impulse.kr(imp), 0, -1, 1, 2));
-	
+
 	Out.ar(out, pan2*cut*sust);
 }.add;
 
@@ -85,7 +85,7 @@ SynthDef(\scale) { |out=0, freq=200, start=1, end=10, sustain=0.5, fadeOut=1, am
 	var sust = EnvGen.kr(Env([1,1,0], [sustain,fadeOut]), 1, doneAction: 2),
 		blip = Blip.ar(freq, Line.kr(start, end, sustain), amp),
 		pan2 = Pan2.ar(blip, FSinOsc.kr(sustain/2));
-	
+
 	Out.ar(out, pan2*sust);
 }.add;
 
@@ -94,7 +94,7 @@ SynthDef(\smoothWave) { |out=0, freq=150, imp=1, sustain=1, amp=0.5|
 		vSaw = VarSaw.ar(freq, 0, LFTri.kr(imp).range(0, 1), amp),
 		pan2 = Pan2.ar(vSaw, FSinOsc.kr(imp*2)*0.25),
 		rvrb = FreeVerb.ar(pan2, 0.25, 1, 0.75);
-	
+
 	Out.ar(out, rvrb*sust);
 }.add;
 
@@ -103,7 +103,7 @@ SynthDef(\straightWave) { |out=0, freq=150, imp=1, sustain=1, amp=0.5|
 		vSaw = VarSaw.ar(freq*2, 0, LFTri.kr(imp).range(0.25, 0.5), amp),
 		pan2 = Pan2.ar(vSaw, FSinOsc.kr(imp*2)*0.25),
 		rvrb = FreeVerb.ar(pan2, 0.25, 1, 0.75);
-	
+
 	Out.ar(out, rvrb*sust);
 }.add;
 
@@ -112,7 +112,7 @@ SynthDef(\doubleStraightWave) { |out=0, freq=150, imp=1, sustain=1, amp=0.5|
 		vSaw = VarSaw.ar(freq*2, 0, LFTri.kr(imp).range(0.25, 0.5), amp),
 		pan2 = Pan2.ar(vSaw, FSinOsc.kr(imp*2)*0.25),
 		rvrb = FreeVerb.ar(pan2, 0.25, 1, 0.75);
-	
+
 	Out.ar(out, rvrb*sust);
 }.add;
 
@@ -121,7 +121,7 @@ SynthDef(\doubleSmoothWave) { |out=0, freq=150, imp=1, sustain=1, amp=0.5|
 		vSaw = VarSaw.ar(freq*2, 0, LFTri.kr(imp).range(0, 1), amp),
 		pan2 = Pan2.ar(vSaw, FSinOsc.kr(imp*2)*0.25),
 		rvrb = FreeVerb.ar(pan2, 0.25, 1, 0.75);
-	
+
 	Out.ar(out, rvrb*sust);
 }.add;
 
@@ -129,7 +129,7 @@ SynthDef(\square) { |out=0, freq=400, atk=0.25, sustain=1, dec=0.25, pan=0, amp=
 	var sust = EnvGen.kr(Env([0, 1, 1, 0], [atk, sustain, dec]), 1, doneAction: 2),
 		puls = Pulse.ar(freq, 0.5, amp),
 		pan2 = Pan2.ar(puls, pan);
-	
+
 	Out.ar(out, pan2*sust);
 }.add;
 
@@ -138,7 +138,7 @@ SynthDef(\hardBass) { |out=0, freq=150, sustain=0.25, pan=0, amp=1|
 		sine = SinOsc.ar(XLine.kr(freq, freq/3, sustain), 0, amp)*env,
 		sqr  = Pulse.ar(XLine.kr(freq, freq/3, sustain), 0.5)*(amp*0.25)*env,
 		pan2 = Pan2.ar(sine+sqr, pan);
-	
+
 	Out.ar(out, pan2);
 }.add;
 
@@ -149,7 +149,7 @@ SynthDef(\bass) { |out=0, freq=150, sustain=0.25, pan=0, amp=1|
 		vSaw = VarSaw.ar(XLine.kr(freq*3, freq, hit), 0, 0.5, amp) * beat,
 		tri  = LFTri.ar(XLine.kr(freq, freq/3, hit), 0, amp) * beat,
 		pan2 = Pan2.ar(vSaw+tri, pan);
-	
+
 	Out.ar(out, pan2*sust);
 }.add;
 
@@ -183,7 +183,7 @@ SynthDef(\cutBuf) { |out=0, imp=2.5, sustain=4, amp=0.25, buf|
 		sEnv = EnvGen.kr(Env([amp, amp, 0], [sustain, 0.5], [0, 5]), 1, doneAction: 2),
 		cStp = Stepper.kr(Impulse.kr(imp), 0, 0, 1, 1),
 		pan2 = Pan2.ar(samp * sEnv * cStp, FSinOsc.kr(0.5));
-	
+
 	Out.ar(out, pan2);
 }.add;
 
@@ -207,7 +207,7 @@ SynthDef(\cutBufReverb) { |out=0, imp=2.5, sustain=4, amp=0.25, buf|
 		cStp = Stepper.kr(Impulse.kr(imp), 0, 0, 1, 1),
 		pan2 = Pan2.ar(samp * cStp, FSinOsc.kr(0.5)),
 		rvrb = FreeVerb.ar(pan2, 0.5, 1, 0.75);
-	
+
 	Out.ar(out, rvrb * sEnv);
 }.add;
 
@@ -229,7 +229,7 @@ SynthDef(\iris) { |out=0, imp=1, sustain=3, amp=0.5, buf|
 		),
 		sEnv = EnvGen.kr(Env([amp/4, amp, 0], [sustain, 0]), 1, doneAction: 2),
 		pan2 = Pan2.ar(samp*sEnv, FSinOsc.kr(imp*2));
-	
+
 	Out.ar(out, pan2);
 }.add;
 
@@ -251,7 +251,7 @@ SynthDef(\quickly) { |out=0, imp=1, sustain=1, grains=3, wait=0.25, amp=0.5, buf
 		),
 		sEnv = EnvGen.kr(Env([amp, amp, 0], [sustain+(grains*wait), 0]), 1, doneAction: 2),
 		pan2 = Pan2.ar(samp*sEnv, FSinOsc.kr(imp*2));
-	
+
 	Out.ar(out, pan2);
 }.add;
 
@@ -274,7 +274,7 @@ SynthDef(\forestNight) { |out=0, imp=1, sustain=7, amp=0.5, buf|
 		sEnv = EnvGen.kr(Env([amp, amp, 0], [5, 5]), 1, doneAction: 2),
 		rvrb = FreeVerb.ar(samp*sEnv, XLine.kr(0.005, 1, 4), 1, 0.75),
 		pan2 = Pan2.ar(rvrb, -1);
-	
+
 	Out.ar(out, pan2);
 }.add;
 
@@ -297,13 +297,13 @@ Buffer.readChannel(s, a[12], channels: 0, action: { |fbuf|
 Buffer.readChannel(s, a[14], channels: 0, action: { |sbuf|
 	"SVC II loaded".postln;
 Routine({
-	
+
 	~breakBuf = { |synth, buf, amp, imps, durs, loops=1|
 		var sust = loops*durs.sum,
 			sImp = Pseq(imps.asArray, inf).asStream,
 			sDur = Pseq(durs.asArray, inf).asStream,
 			inst = Synth(synth, [\buf, buf, \sustain, sust, \amp, amp, \imp, sImp.next]);
-		
+
 		Routine({
 			(loops*imps.size - 1).do({
 				sDur.next.wait;
@@ -311,7 +311,7 @@ Routine({
 			});
 		}).play;
 	};
-	
+
 	// 1 loop = 8 seconds
 	~wubMelody = { |synth, loops=1, amp=0.25, imp=1|
 		Pbind(
@@ -326,11 +326,11 @@ Routine({
 			\amp, amp
 		).play;
 	};
-	
+
 	// 96 seconds
 	~wubDrums = {
 		var speed = 2;
-		
+
 		Routine({
 			// 96 seconds
 			// 1 loop = 7 seconds
@@ -374,7 +374,7 @@ Routine({
 			).play;
 		}).play;
 	};
-	
+
 	// 8 seconds
 	~wubDrums2 = {
 		var speed = 2;
@@ -410,7 +410,7 @@ Routine({
 			).play;
 		}).play;
 	};
-	
+
 	~simpleBass = { |loops=1, amp=0.5, freq=150, dur=0.5, legato=0.25, dStut1=1, dStut2=1, dStut3=4, pan=0|
 		Pbind(
 			\instrument, \hardBass,
@@ -430,7 +430,7 @@ Routine({
 			\amp, amp
 		).play;
 	};
-	
+
 	~simpleSnare = { |loops=1, amp=0.5, dur=1, dStut1=1, dStut2=1, dStut3=4|
 		Pbind(
 			\instrument, \snare,
@@ -447,11 +447,11 @@ Routine({
 			\amp, amp
 		).play;
 	};
-	
+
 	// 1 loop = 8 seconds
 	~melody2 = { |synth, loops=1, amp=0.25|
 		var speed = 2;
-		
+
 		Pbind(
 			\instrument, synth,
 			\freq, Pseq([
@@ -468,7 +468,7 @@ Routine({
 			)
 		).play;
 	};
-	
+
 	// 1 loop = 16 seconds
 	~melody3 = { |synth, loops=1, amp=0.25, imp=1|
 		Pbind(
@@ -480,7 +480,7 @@ Routine({
 			\amp, amp
 		).play;
 	};
-	
+
 	// 1 loop = 8 seconds
 	~melody4 = { |synth, loops=1, amp=0.25, imp=0.95|
 		Pbind(
@@ -495,9 +495,9 @@ Routine({
 			\amp, amp
 		).play;
 	};
-	
-	
-	
+
+
+
 	Synth(\humm, [\amp, 0.05, \sustain, 32]); // 32s
 	8.wait;
 	Synth(\softTwinkle, [\amp, 0.05, \sustain, 56]); // 56s
@@ -508,7 +508,7 @@ Routine({
 	16.wait;
 	Synth(\lurker, [\minF, 200, \maxF, 2000, \amp, 0.15, \sustain, 20]); // 20s
 	20.wait;
-	
+
 	Synth(\lurker, [\minF, 50, \maxF, 500, \amp, 0.2, \sustain, 46]); // 46s
 	10.wait;
 	Synth(\lurker, [\minF, 7250, \maxF, 7500, \amp, 0.025, \dur, 8, \sustain, 36]); // 36s
@@ -524,7 +524,7 @@ Routine({
 	Synth(\iris, [\amp, 0.25, \buf, ibuf]); // 3s
 	3.wait;
 	Synth(\quickly, [\amp, 0.5, \buf, ibuf]); // 3s
-	
+
 	~wubMelody.value(\doubleSmoothWave, 1, 0.075); // 8s
 	8.wait;
 	Synth(\quickly, [\amp, 0.2, \buf, ibuf]); // 3s
@@ -536,7 +536,7 @@ Routine({
 	8.wait;
 	Synth(\twinkle, [\amp, 0.05, \sustain, 36, \fadeOut, 8]); // 36s
 	40.wait;
-	
+
 	Synth(\scale, [\freq, 300, \sustain, 1, \end, 15, \amp, 0.1]);
 	~wubMelody.value(\doubleSmoothWave, 6, 0.2); // 48s
 	8.wait;
@@ -546,14 +546,14 @@ Routine({
 	24.wait;
 	~wubDrums2.value; // 8s
 	8.wait;
-	
+
 	Synth(\scale, [\freq, 100, \sustain, 1, \start, 15, \end, 1, \amp, 0.1]);
 	Synth(\scale, [\freq, 250, \sustain, 1, \start, 25, \end, 1, \amp, 0.1]);
 	~wubMelody.value(\brokenWub, 2, 0.25); // 16s
 	8.wait;
 	Synth(\smoothWave, [\amp, 0.25, \sustain, 8, \imp, 0.03125, \freq, 250]); // 8s
 	8.wait;
-	
+
 	~breakBuf.value(\cutBuf, hkbuf, 0.75, [2, 60, 4, 20], [8, 4, 3, 1], 1); // 16s
 	~wubMelody.value(\smoothWave, 2, 0.2); // 16s
 	16.wait;
@@ -567,12 +567,12 @@ Routine({
 	8.wait;
 	~melody4.value(\straightWave, 1, 0.15); // 8s
 	8.wait;
-	
+
 	Synth(\scale, [\freq, 250, \sustain, 4, \start, 25, \end, 1, \amp, 0.1]);
 	~melody3.value(\smoothWave, 1, 0.2, 0.5); // 16s
 	~simpleBass.value(8, 0.25); // 16s
 	8.wait;
-	
+
 	~melody2.value(\doubleStraightWave, 5, 0.1, 0.0125); // 40s
 	12.wait;
 	~simpleBass.value(40, 0.25); // 80s
@@ -589,7 +589,7 @@ Routine({
 	~melody4.value(\doubleSmoothWave, 2, 0.15); // 16s
 	Synth(\lurker, [\minF, 50, \maxF, 500, \amp, 0.2, \sustain, 88]); // 88s
 	40.wait;
-	
+
 	Synth(\distantMachine, [\amp, 0.05, \sustain, 10, \fadeOut, 6]); // 16s
 	10.wait;
 	Synth(\softTwinkle, [\amp, 0.025, \sustain, 16]); // 16s
@@ -604,9 +604,9 @@ Routine({
 	8.wait;
 	Synth(\distantMachine, [\amp, 0.025, \sustain, 12, \fadeOut, 8]); // 20s
 	24.wait;
-	
-	
-	
+
+
+
 	"It's Over".postln;
 }).play;
 });

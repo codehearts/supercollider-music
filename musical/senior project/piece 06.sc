@@ -1,10 +1,10 @@
-"~/Music/SC/samples/samples.sc".standardizePath.loadPaths;
+"~/Music/supercollider-music/samples/samples.sc".standardizePath.loadPaths;
 
 SynthDef(\square) { |out=0, freq=440, amp=0.25, pan=0, sustain=1|
 	var env  = EnvGen.kr(Env([0.5, 1, 0], [sustain, 0.1]), 1, doneAction: 2),
 		sqr  = (Pulse.ar(freq, 0.5, amp)+Saw.ar(freq, amp*0.25))*env,
 		pan2 = Pan2.ar(sqr, pan);
-	
+
 	Out.ar(out, pan2);
 }.add;
 
@@ -13,7 +13,7 @@ SynthDef(\squareFade) { |out=0, freq=440, amp=0.25, sustain=1, curve=0|
 		trem = SinOsc.kr(1),
 		sqr  = Pulse.ar(freq, 0.5, (amp*0.75)+(abs(trem)*(amp*0.25)))*env,
 		pan  = Pan2.ar(sqr, Line.kr(-1, 1, sustain));
-	
+
 	Out.ar(out, pan);
 }.add;
 
@@ -22,7 +22,7 @@ SynthDef(\squareSpace) { |out=0, freq=440, amp=0.25, pan=0, gate=1|
 		inst = Pulse.ar(freq, 0.5, amp)*env,
 		rvrb = FreeVerb.ar(inst, 0.75, 0.75, 0.5),
 		pan2 = Pan2.ar(rvrb, pan);
-	
+
 	Out.ar(out, pan2);
 }.add;
 
@@ -46,7 +46,7 @@ SynthDef(\leaves) { |out=0, gate=1, fadeIn=1, fadeOut=1, rate=4, density=25, amp
 		env  = EnvGen.kr(Env.cutoff(fadeOut, 1), gate, doneAction: 2) * samp,
 		rvrb = FreeVerb2.ar(env, env, 0.5, 1, 0),
 		pan2 = Pan2.ar(rvrb, LFNoise0.kr(density, -1, 2)-1);
-	
+
 	Out.ar(out, pan2);
 }.send(s);
 
@@ -54,12 +54,12 @@ SynthDef(\leaves) { |out=0, gate=1, fadeIn=1, fadeOut=1, rate=4, density=25, amp
 
 Buffer.readChannel(s, a[5], channels: 0, action: { |kbuf|
 	"Kalimbas loaded".postln;
-	
+
 Routine({
 	var flourish,
 		chimes,
 		bass;
-	
+
 	flourish = Routine({
 		var sustain = 32, // Should be divisible by 4
 			leaf;
@@ -78,7 +78,7 @@ Routine({
 
 		leaf.set(\gate, 0);
 	});
-	
+
 	bass = Routine({
 		var loops  = 64,
 			freq   = Pstutter(
@@ -99,7 +99,7 @@ Routine({
 			dur.wait;
 		});
 	});
-	
+
 	chimes = Routine({
 		var loops   = 10,
 			waitFor = 4,
@@ -133,46 +133,46 @@ Routine({
 			waitFor.wait;
 		});
 	});
-	
-	
+
+
 	flourish.play;
 	8.wait;
 	bass.play;
 	16.wait;
 	chimes.play;
-	
-	
-	
+
+
+
 	/*squares = Routine({
 		var loops     = 32,
 			changes   = 2,
 			softLoops = loops/changes,
 			sustain   = 0.05;
-		
+
 		softLoops.do({ |i|
 			var freqs = Pshuf([100, 200, 300, 400, 500], changes);
-			
+
 			freqs.do({ |freq|
 				var square = Synth(\square, [\freq, freq, \amp, 0.5]);
-				
+
 				sustain.wait;
 				square.set(\gate, 0);
 			});
 		});
 	}).play;*/
-	
+
 	/*Routine({
 		var loops = 50,
 			dur   = 0.1;
-		
+
 		loops.do({ |i|
 			var freqs = [423.6, 1108.9, 685.4, 261.8, 161.8];
-			
+
 			if (i%2 == 0, { freqs[1] = 161.8;  });
 			if (i%3 == 0, { freqs[2] = 261.8;  });
 			if (i%4 == 0, { freqs[3] = 685.4;  });
 			if (i%5 == 0, { freqs[4] = 1108.9; });
-			
+
 			freqs.do({ |freq, j|
 				var square = Synth(\square, [\freq, freq, \amp, 0.25]);
 
@@ -181,14 +181,14 @@ Routine({
 			});
 		});
 	}).play;*/
-	
+
 	/*Routine({
 		var loops = 8,
 			dur   = 0.25;
-		
+
 		loops.do({ |i|
 			var freqs = Pseq([1108.9, 161.8, 423.6, 261.8, 423.6, 261.8, 685.4, 423.6], 1, i).asStream;
-			
+
 			freqs.do({ |freq, j|
 				var square = Synth(\square, [\freq, freq, \amp, 0.3]);
 
@@ -197,20 +197,20 @@ Routine({
 			});
 		});
 	}).play;*/
-	
+
 	/*Routine({
 		var loops = 32,
 			freqs = Pseq([1108.9, 685.4, 423.6, 261.8, 423.6, 261.8, 161.8, 423.6], loops).asStream,
 			dur   = Pseq([1, 0.75, 0.5, 0.75, 1], loops).asStream;
-		
+
 		loops.do({ |i|
 			var square = Synth(\square, [\freq, freqs.next, \amp, 0.25]);
-			
+
 			dur.next.wait;
 			square.set(\gate, 0);
 		});
 	}).play;*/
-	
+
 	/*Routine({
 		var loops = 32,
 			freqs = Pseq([1108.9, 685.4, 423.6, 261.8, 161.8, 100], loops).asStream,
@@ -218,14 +218,14 @@ Routine({
 				Pseq([2,2,2,2,2,2, 1,0.5,1,0.5,1,0.5], loops),
 				Pseq([0.1], loops)
 			).asStream;
-		
+
 		loops.do({ |i|
 			var square = Synth(\square, [\freq, freqs.next, \amp, 0.2]);
-			
+
 			dur.next.wait;
 			square.set(\gate, 0);
 		});
 	}).play;*/
-	
+
 }).play;
 });

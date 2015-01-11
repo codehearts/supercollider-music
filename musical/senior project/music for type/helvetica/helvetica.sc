@@ -1,6 +1,6 @@
 // 3 minutes 34 seconds
 
-"~/Music/SC/samples/samples.sc".standardizePath.loadPaths;
+"~/Music/supercollider-music/samples/samples.sc".standardizePath.loadPaths;
 //"../samples/samples.sc".resolveRelative.loadPaths;
 
 SynthDef(\sine) { |out=0, freq=440, amp=0.25, pan=0, gate=1, fadeOut=0.05|

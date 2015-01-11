@@ -1,6 +1,6 @@
 // Fairly nice granular synthesis
 
-~kaliba = "samples/Kaliba.aiff".resolveRelative;
+~kaliba = "~/Music/supercollider-music/samples/Kaliba.aiff".standardizePath;
 "Audio samples loaded";
 
 // Random kalimba Leaves

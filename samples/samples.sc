@@ -4,7 +4,7 @@
  * p - A method that takes in an audio file path, reads it as a buffer, and plays it
  */
 
-var dir = "~/Music/SC/samples/".standardizePath;
+var dir = "~/Music/supercollider-music/samples/".standardizePath;
 a = [
 	dir++"Cello II.aiff",       // 0
 	dir++"City of Julie.aiff",  // 1
