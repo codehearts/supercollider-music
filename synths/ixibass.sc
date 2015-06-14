@@ -14,11 +14,11 @@ SynthDef(\ixibass, {arg out=0, amp=0.3, t_trig=1, freq=100, rq=0.004;
 (
 Pmono(\ixibass,
   \dur, Pseq([0.25, 0.25, 0.5, 0.75], inf),
-  \midinote, Pseq([ 60, 50, 48, 62] , inf)).play;
+  \midinote, Pseq([ 60, 50, 48, 62, 70] , inf)).play;
 
 Pmono(\ixibass,
   \dur, Pseq([0.25, 0.25, 0.5, 0.25, 0.25, 0.25], inf),
-  \midinote, Pseq([ 48, 45, 48, 55, 57, 60] , inf)).play(quant:[0,3.5,0])
+  \midinote, Pseq([ 48, 45, 48, 55, 57, 60, 50] , inf)).play(quant:[0,3.5,0])
 )
 
 
