@@ -57,7 +57,7 @@ Routine({
 	).play;
 
 
-90.wait;
+//90.wait;
 	Pbind(
 		\instrument, \beep,
 		\freq, Pstutter(
@@ -140,6 +140,6 @@ Routine({
 		),
 		\amp, 0.1,
 		\out, Pseq([0], inf)
-	);//.play;
+	).play;
 
 }).play;
