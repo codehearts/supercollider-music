@@ -4,6 +4,95 @@
 // TODO This sounds really cool with a reverse reverb and tape delay
 // ---------
 
+// Based on code from http://article.gmane.org/gmane.comp.audio.supercollider.user/50457
+s.waitForBoot {
+	// preparation; essentially, allocate an impulse response buffer, then follow a special buffer preparation step to set up the data the plugin needs. Different options are provided commented out for loading impulse responses from soundfiles.
+	var lengthinsamples = 40000;
+	~fftsize=8192; // also 4096 works on my machine; 1024 too often and amortisation too pushed, 8192 more high load FFT
+
+	{
+		var ir, irbuffer, bufsize;
+		var nextmod=100;
+
+		ir = [0] ++0.dup(100) ++ (Array.fill(lengthinsamples,{|i| if(i%(nextmod)==0,{nextmod= rrand(80,120); 0.3*((i.asFloat/lengthinsamples).squared)},{0.0}) }));
+
+		irbuffer = Buffer.loadCollection(s, ir);
+
+		s.sync;
+
+		bufsize= PartConv.calcBufSize(~fftsize, irbuffer);
+
+		~irspectrum = Buffer.alloc(s, bufsize, 1);
+
+		~irspectrum.preparePartConv(irbuffer, ~fftsize);
+
+		s.sync;
+
+		irbuffer.free; // don't need time domain data anymore, just needed spectral version
+	}.fork;
+};
+
+SynthDef(\reverse_reverb) { |in=#[0,1], out=#[0,1], amp=1|
+	var input, new_out;
+
+	input = In.ar(in, 2);
+	new_out = PartConv.ar(input, ~fftsize, ~irspectrum.bufnum, amp) + input;
+
+	ReplaceOut.ar(out, new_out);
+}.add;
+
+// Based on code from http://permalink.gmane.org/gmane.comp.audio.supercollider.user/77153
+SynthDef(\tape_delay) { |in=#[0,1], out=#[0,1], imp=1, lag=3, maxLag=0.2, decayTime=6|
+	var input, newOut, delayTime, laggedDelayTime, outDelay;
+
+	input = In.ar(in, 2) * 0.75;
+	// Delay time jumps on impulse
+	delayTime = Demand.kr(Impulse.kr(imp), 0, Dseq([0.3], inf));
+	// Amount of time to reach new value
+	laggedDelayTime = Lag.kr(delayTime, lag);
+	// CombC - delay with feedback
+	newOut = CombC.ar(input, maxLag, laggedDelayTime, decayTime) + in;
+
+	ReplaceOut.ar(out, newOut);
+}.add;
+
+// Based on code from http://new-supercollider-mailing-lists-forums-use-these.2681727.n2.nabble.com/Distortion-effect-tp5173262p5173287.html
+SynthDef(\distortion) { |in=#[0,1], out=#[0,1], amount=0.99, amp=1, freq=0.25|
+	var input, mod_amount, amCoef, newOut;
+
+	mod_amount = FSinOsc.kr(freq).range(amount, 1) * amount;
+	amCoef= 2*mod_amount/(1-mod_amount);
+
+	input = HPF.ar(In.ar(in, 2), 400)*5;
+
+	newOut = MidEQ.ar(LPF.ar((1+amCoef)*input/(1+(amCoef*input.abs)), [3800, 3900])*0.5, 120, 0.7, 8);
+
+	ReplaceOut.ar(out, newOut * amp);
+}.add;
+
+SynthDef(\feedback) { |in=#[0,1], out=#[0,1], amp=1|
+	var input, fb_in, fb_out, processing, speed;
+
+	speed = LFNoise1.kr(0.5, 2, 2.05);
+	input = In.ar(in, 2) * Crackle.ar(1.5, 0.15);
+	fb_in = LocalIn.ar(2);
+
+	// Mix the input with the feedback loop, fixing gain at 1.1
+	processing = input + LeakDC.ar(DelayN.ar(fb_in, 3.5, speed, 1.1));
+	// Resonant low-pass filter moving at various rates determined by `speed`, with frequencies between 400-1200
+	processing = RLPF.ar(processing, LFNoise1.kr(speed, 400, 800), 0.5);
+	// Square off the wave form (distortion)
+	//processing = processing.clip;
+
+	fb_out = LocalOut.ar(processing);
+
+	// Signal threshold a "low-rent gate"
+	processing = processing.thresh(0.45);
+	processing = Limiter.ar(processing);
+
+	ReplaceOut.ar(out, processing * amp);
+}.add;
+
 SynthDef(\deadVibe) { |out=0, imp=5, freq=150, sustain=0.25, attack=0.75, decay=0.25, pan=0, amp=0.5|
 	var aEnv = EnvGen.kr(
 			Env.linen(sustain*attack, sustain*(1-attack), decay, amp, [-2.5,0,0]),
@@ -282,6 +371,12 @@ Routine({
 		\amp, 0.25,
 		\out, 0
 	).play;
+
+	//a = Synth(\vibrato, [\in, 0, \out, 0, \imp, 1/32, \freq, 32]);
+	//a = Synth(\feedback, [\in, 0, \out, 0]);
+	//a = Synth(\distortion, [\in, 0, \out, 0, \amount, 0.05]);
+	d = Synth(\tape_delay, [\in, 0, \out, 0, \imp, 1/8, \lag, 1/4, \maxLag, 1, \decayTime, 8]);
+	e = Synth.after(d, \reverse_reverb, [\in, 0, \out, 0]);
 
 
 	//8.wait;
